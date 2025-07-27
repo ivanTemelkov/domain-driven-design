@@ -9,6 +9,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\IvTem.DomainDrivenDesign\IvTem.DomainDrivenDesign.csproj" />
+      <ProjectReference Include="..\..\src\IvTem.Results\IvTem.Results.csproj" />
     </ItemGroup>
 
 </Project>

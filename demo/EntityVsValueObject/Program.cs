@@ -1,4 +1,5 @@
 ﻿using EntityVsValueObject.Model;
+using IvTem.Results;
 
 // Not my real birthday
 var me = new Person("Ivan", "Temelkov", "Temelkov", new Age(new DateTime(1986, 02, 13)));
@@ -25,3 +26,37 @@ var ageAsCoded = johnDoe.Age.GetValue(fixedDateProvider).TotalDays;
 Console.WriteLine($"{johnDoe.FullName.Value} was {ageAsCoded:0} days old on {dateReference:dd MMMM yyyy}."); // Age when the application is run
 
 Console.WriteLine(me.Age.Equals(johnDoe.Age)); // Should be false
+
+
+
+
+var action = () =>
+{
+    throw new InvalidOperationException("I did it on purpose!");
+};
+
+action.Try()
+    .Match(() => Console.WriteLine("Will not happen."),
+        error => Console.WriteLine(error.Message));
+
+action.Try()
+    .Bind(() => Console.WriteLine("Will not happen."));
+
+var transformResult = GetConnectionString()
+    .Map(x => x.ToUpperInvariant())
+    .Map(x => x.Trim());
+
+if (transformResult.IsSuccess(out var transformed, out var transformError))
+{
+    Console.WriteLine(transformed);
+}
+else
+{
+    Console.WriteLine(transformError.Message);
+}
+
+
+Result<string> GetConnectionString()
+{
+    return Result<string>.Success("My Connection string");
+}
